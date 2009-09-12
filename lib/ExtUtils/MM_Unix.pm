@@ -525,6 +525,9 @@ Defines a lot of macros for distribution support.
   macro         description                     default
 
   TAR           tar command to use              tar
+  TARADDFLAGS   additional flags to pass to     --mode=0755
+                TAR, separated because of tar
+                command line arguments parsing
   TARFLAGS      flags to pass to TAR            cvf
 
   ZIP           zip command to use              zip
@@ -565,6 +568,7 @@ sub init_dist {
     my $self = shift;
 
     $self->{TAR}      ||= 'tar';
+    $self->{TARADDFLAGS} ||= '--mode=0755';
     $self->{TARFLAGS} ||= 'cvf';
     $self->{ZIP}      ||= 'zip';
     $self->{ZIPFLAGS} ||= '-r';
@@ -601,7 +605,7 @@ sub dist {
 
     my $make = '';
     foreach my $key (qw( 
-            TAR TARFLAGS ZIP ZIPFLAGS COMPRESS SUFFIX SHAR
+            TAR TARADDFLAGS TARFLAGS ZIP ZIPFLAGS COMPRESS SUFFIX SHAR
             PREOP POSTOP TO_UNIX
             CI RCS_LABEL DIST_CP DIST_DEFAULT
             DISTNAME DISTVNAME
@@ -764,7 +768,7 @@ sub tarfile_target {
 $(DISTVNAME).tar$(SUFFIX) : distdir
 	$(PREOP)
 	$(TO_UNIX)
-	$(TAR) $(TARFLAGS) $(DISTVNAME).tar $(DISTVNAME)
+	$(TAR) $(TARFLAGS) $(DISTVNAME).tar $(TARADDFLAGS) $(DISTVNAME)
 	$(RM_RF) $(DISTVNAME)
 	$(COMPRESS) $(DISTVNAME).tar
 	$(POSTOP)

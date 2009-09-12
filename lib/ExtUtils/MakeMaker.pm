@@ -2671,6 +2671,7 @@ following parameters are recognized:
     SHAR         ('shar')
     SUFFIX       ('.gz')
     TAR          ('tar')
+    TARADDFLAGS  ('--mode=0755')
     TARFLAGS     ('cvf')
     ZIP          ('zip')
     ZIPFLAGS     ('-r')
